@@ -111,7 +111,7 @@ TYPES = {'polygon':0,'rect':1,'oval':2,'line':3,'freeline':4,'polyline':5,
 def decode_ij_roi(roi,img_shape):
     xMax = img_shape[1]
     yMax = img_shape[2]
-    print('xMax',xMax,'yMax',yMax)
+    
     
     
     class ShapeRoi():
@@ -175,8 +175,9 @@ def decode_ij_roi(roi,img_shape):
 
         if offset+(length*2) > size:
             return ""
-
+        #print(offset,length,str(roi[offset:offset+(length*2)],'utf-8'))
         return bytearray(roi)[offset:offset+(length*2)].decode('ascii')
+
     def getShort(st):
         return int.from_bytes(roi[st:st+2], byteorder='big')
     def getUnsignedShort(st):
@@ -232,11 +233,10 @@ def decode_ij_roi(roi,img_shape):
     
     if subPixelRect:
         xd = getFloat(XD)
-        print('xd',roi[XD:XD+4])
+        
         yd = getFloat(YD)
         widthd = getFloat(WIDTHD)
         heightd = getFloat(HEIGHTD)
-        print('xd,yd,wd,hd',xd,yd,widthd,heightd)
         
     if (hdr2Offset>0 and hdr2Offset+IMAGE_SIZE+4<=size):
 
@@ -282,7 +282,7 @@ def decode_ij_roi(roi,img_shape):
             roi_b.subPixelRect = False
 
         arcSize = getShort(ROUNDED_RECT_ARC_SIZE)
-        print(arcSize,'arcSize')
+        
         if arcSize > 0:
             roi_b.setCornerDiameter(arcSize)
     elif(rtype == TYPES['oval']):
@@ -298,37 +298,20 @@ def decode_ij_roi(roi,img_shape):
         #TODO: polygon option.
         return False
         
-    roi_b.name =  getROIName(roi_b,hdr2Offset,NAME_OFFSET,NAME_LENGTH)
+    
+    roi_b.name =  getROIName(roi,hdr2Offset,NAME_OFFSET,NAME_LENGTH)
  
     if(version>=218):
         getStrokeWidthAndColor(roi_b,hdr2Offset)
     
     
     
-    print('size',size)
-    
-    
-
-    print('C',channel,'Z',sliceZ,'T',frame,'ol',overlayLabelColor,'imageSize',imageSize)
-    print('top',top,'left',left,'bottom',bottom,'right',right)
-    print('xd',xd,'yd',yd,'xwidth',widthd,'yheight',heightd)
-
+  
     roi_b.roiType = rtype
     
 
     
-    print(version)
-    print('rtype',roi_b.roiType)
-    print(roi_b.x,roi_b.y,roi_b.width,roi_b.height)
-    
-    print('stroke_width',roi_b.strokeLineWidth)
-    #print('shapeROI',ShapeROI)
-    print('stroke_col',roi_b.strokeColor)
-    print('fillcolour',roi_b.fillColor)
-    
-    
-    print('name',roi_b.name)
-    print('\n\n\n\n\n')
+   
 
 
     roi_b.setPosition(position);

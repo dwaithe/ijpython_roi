@@ -91,7 +91,7 @@ def encode_ij_roi(roi_b):
 				putPointCounters(roi,hdr2Offset)
 		def saveOverlayOptions(roi_b, options):
 			#TODO finish saveOVerlayOptions
-			print('TODO do overlay')
+			print('TODO do overlay additional options')
 			return False
 
 			#proto = roi_b.getPrototypeOverlay()
@@ -150,12 +150,12 @@ def encode_ij_roi(roi_b):
 		putShort(dec.RIGHT, int(roi_b.x+roi_b.width));
 		
 
-		print('roi_b.subPixelRect',roi_b.subPixelRect)
+		
 		if roi_b.subPixelRect and (rtype==TYPES['rect'] or rtype==TYPES['oval']):
 			
 			p = roi_b.getFloatPolygon()
 			if p['npoints'] == 4:
-				print('pppppp',p)
+				
 				putFloat(dec.XD, p['xpoints'][0])
 				putFloat(dec.YD, p['ypoints'][0])
 				putFloat(dec.WIDTHD, p['xpoints'][1]- p['xpoints'][0])
@@ -164,7 +164,7 @@ def encode_ij_roi(roi_b):
 				putShort(dec.OPTIONS,options)
 
 
-				print(data)
+				
 		if n > 65535:
 			if (rtype==TYPES['polygon'] or rtype==TYPES['freehand'] or rtype==TYPES['traced']):
 				name = roi_b.getName()
