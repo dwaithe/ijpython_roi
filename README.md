@@ -22,7 +22,7 @@ I haven't implemented all the features. At the moment it is possible to encode a
 
 
 ### Example usage Encoder:
-
+```python
 from ij_roi import Roi
 from ijpython_encoder import encode_ij_roi, RGB_encoder
 import numpy as np
@@ -58,10 +58,11 @@ tifffile.imsave("out5.tiff",im_stk, shape=im_stk.shape,imagej=True,ijmetadata=me
 
 
 
+```
 
 
 ### Example usuage Decoder:
-
+```python
 pathname2 ="out5.tif"
 tfile = tifffile.TiffFile(pathname2)
 img_shape = tfile.asarray().shape
@@ -86,4 +87,5 @@ if 'ROI' in tfile.imagej_metadata:
     decode_ij_roi(ROI,img_shape)
 else:
     print("ROI not present in file.")
-    
+```
+   
