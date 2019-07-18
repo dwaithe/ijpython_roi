@@ -1,4 +1,4 @@
-# ij_python roi implementation
+# ImageJ to python Region-of-Interest (ROI) exchange function.
 
 Python implementation of the ImageJ ROI api:
 https://imagej.nih.gov/ij/developer/source/ij/io/RoiDecoder.java.html
@@ -10,11 +10,11 @@ This can be installed using pip through:
 pip install git+https://github.com/dwaithe/generalMacros/ijPython_roi
 
 Requirements:
-tifffile
-numpy
+- tifffile
+- numpy
 
-Background:
-I wanted a way of efficiently encoding ROI into tiff files so that the information could be used interchably between ImageJ and python.
+### Background:
+I wanted a way of efficiently encoding ROI into tiff files so that the information could be used interchangeably between ImageJ and python.
 
 I haven't implemented all the features. At the moment it is possible to encode and decode rectangular regions.
 
