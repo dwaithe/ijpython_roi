@@ -29,33 +29,33 @@ from ijpython_encoder import encode_ij_roi, RGB_encoder
 import numpy as np
 import tifffile
 
-im_stk = np.zeros((100,1,512,512)).astype(np.float32)
+im_stk = np.zeros((100, 1, 512, 512)).astype(np.float32)
 
 
 data = []
-roi_b = Roi(30,40,140,120, im_stk.shape[2],im_stk.shape[3],0)
+roi_b = Roi(30, 40, 140, 120, im_stk.shape[2], im_stk.shape[3], 0)
 roi_b.name = "Region 1"
 roi_b.roiType = 1
 roi_b.position = 10
 roi_b.strokeLineWidth = 3.0
-roi_b.strokeColor = RGB_encoder(255,0,255,255)
+roi_b.strokeColor = RGB_encoder(255, 0, 255, 255)
 
 data.append(encode_ij_roi(roi_b))
 
-roi_b = Roi(130,140,140,120, im_stk.shape[2],im_stk.shape[3],0)
+roi_b = Roi(130, 140, 140, 120, im_stk.shape[2], im_stk.shape[3], 0)
 roi_b.name = "Region 1"
 roi_b.roiType = 1
 roi_b.position = 10
 roi_b.strokeLineWidth = 3.0
-roi_b.strokeColor = RGB_encoder(255,0,0,255)
+roi_b.strokeColor = RGB_encoder(255, 0, 0, 255)
 
 
 data.append(encode_ij_roi(roi_b))
 
-metadata = {'hyperstack': True ,'slices': 100,'channels':1, 'images': 100, 'ImageJ': '1.52g', 'Overlays':data , 'loop': False}
+metadata = {'hyperstack': True ,'slices': 100, 'channels':1, 'images': 100, 'ImageJ': '1.52g', 'Overlays':data , 'loop': False}
 
 
-tifffile.imsave("out5.tiff",im_stk, shape=im_stk.shape,imagej=True,ijmetadata=metadata)
+tifffile.imsave("out5.tiff", im_stk, shape=im_stk.shape, imagej=True, ijmetadata=metadata)
 
 
 
@@ -74,18 +74,18 @@ if 'Overlays' in tfile.imagej_metadata:
     if overlays.__class__.__name__ == 'list':
         #Multiple overlays and so iterate.
         for overlay in overlays:
-            decode_ij_roi(overlay,img_shape)
+            decode_ij_roi(overlay, img_shape)
     else:
         #One overlay.
-        print ('overlays',overlays)
-        decode_ij_roi(overlays,img_shape)
+        print ('overlays', overlays)
+        decode_ij_roi(overlays, img_shape)
 else:
     print('no Overlays present in file.')
 
 if 'ROI' in tfile.imagej_metadata:
     print('ROI')
     ROI = tfile.imagej_metadata['ROI']
-    decode_ij_roi(ROI,img_shape)
+    decode_ij_roi(ROI, img_shape)
 else:
     print("ROI not present in file.")
 ```
