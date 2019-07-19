@@ -1,10 +1,9 @@
-from ij_roi import Roi
-from ijpython_encoder import encode_ij_roi, RGB_encoder
-from ijpython_decoder import decode_ij_roi
+from ijroi.ij_roi import Roi
+from ijroi.ijpython_encoder import encode_ij_roi, RGB_encoder
+from ijroi.ijpython_decoder import decode_ij_roi
 import numpy as np
 import tifffile
 import pylab as plt
-
 pathname2 ="out4.tif"
 tfile = tifffile.TiffFile(pathname2)
 img_shape = tfile.asarray().shape
@@ -31,8 +30,17 @@ if 'ROI' in tfile.imagej_metadata:
 else:
     print("ROI not present in file.")
 
+#Shows how to create mask image.
+img = np.zeros((img_shape))
 for i in range(0,overlay_arr.__len__()):
-	print(overlay_arr[i].getMask())
-	
-	plt.imshow(overlay_arr[i].getMask())
-	plt.show()
+
+    if overlay_arr[i] != False:
+        x0 = overlay_arr[i].x
+        y0 = overlay_arr[i].y
+        wid = overlay_arr[i].width
+        hei = overlay_arr[i].height
+        img[y0:y0+hei, x0:x0+wid] = overlay_arr[i].getMask()
+   
+    
+plt.imshow(img)
+plt.show()

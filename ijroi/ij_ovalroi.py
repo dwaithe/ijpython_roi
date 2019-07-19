@@ -1,5 +1,5 @@
 import numpy as np
-from ij_roi import Roi
+from ijroi.ij_roi import Roi
 
 class OvalRoi(Roi):
       """docstring for OvalRoi"""

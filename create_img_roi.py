@@ -1,5 +1,5 @@
-from ij_roi import Roi
-from ijpython_encoder import encode_ij_roi, RGB_encoder
+from ijroi.ij_roi import Roi
+from ijroi.ijpython_encoder import encode_ij_roi, RGB_encoder
 import numpy as np
 import tifffile
 
@@ -41,4 +41,3 @@ pathname2 ="/Users/dwaithe/Desktop/out5.tiff"
 #pathname2 = 'out3.tif'
 tfile = tifffile.TiffFile(pathname2)
 #tfile.imagej_metadata = meta
-print(tfile.imagej_metadata)

@@ -1,4 +1,4 @@
-import ijpython_decoder as dec
+import ijroi.ijpython_decoder as dec
 import tifffile as tifffile
 import ast
 import struct
@@ -49,15 +49,15 @@ def encode_ij_roi(roi_b):
 				putShort(offset+i*2, ord(roiName[i]))
 		def saveStrokeWidthAndColor(roi_b):
 			stroke = roi_b.getStroke()
-			print("stroke",stroke)
+			
 			if stroke != None:
 				putShort(dec.STROKE_WIDTH, stroke.getLineWidth())
 			strokeColor = roi_b.getStrokeColor()
-			print("strokeColor",strokeColor)
+			
 			if strokeColor != None:
 				putInt(dec.STROKE_COLOR, strokeColor)
 			fillColor = roi_b.getFillColor()
-			print("fillColor",fillColor)
+			
 			if fillColor != None:
 				putInt(dec.FILL_COLOR, fillColor)
 
@@ -212,7 +212,7 @@ def encode_ij_roi(roi_b):
 		elif n==0 and roi_b.ImageRoi:
 			options = saveImageRoi(roi_b, options)
 		else:
-			print('colours')
+			
 			putHeader2(roi_b, HEADER_SIZE+n*4+floatSize)
 
 		if n>0:
@@ -229,62 +229,7 @@ def encode_ij_roi(roi_b):
 					putFloat(base2+1*4, yf[i])
 
 		saveOverlayOptions(roi_b,options)
-		print(data)
+		
 		return data
 
 	return write(roi_b)
-
-if __name__ == "__main__":
-
-	pathname2 ="out3.tif"
-	tfile = tifffile.TiffFile(pathname2)
-	img_shape = ast.literal_eval(tfile.imagej_metadata['Info'].split("\n")[0].split('ImageDescription: ')[1])['shape']
-
-
-	overlays_o = []
-	count =0 
-	if 'Overlays' in tfile.imagej_metadata:
-		overlays = tfile.imagej_metadata['Overlays']
-		if overlays.__class__.__name__ == 'list':
-			#Multiple overlays and so iterate.
-			for overlay in overlays:
-				print('counter',count)
-				count +=1
-				roi_b = dec.decode_ij_roi(overlay,img_shape)
-				data = encode_ij_roi(roi_b)
-				overlays_o.append(data)
-		else:
-			#One overlay.
-			roi_b = dec.decode_ij_roi(overlays,img_shape)
-			data = encode_ij_roi(roi_b)
-			overlays_o.append(data)
-	else:
-		print('no Overlays present in file.')
-
-	
-	if 'ROI' in tfile.imagej_metadata:
-		print('ROI')
-		ROI = tfile.imagej_metadata['ROI']
-		roi_b = dec.decode_ij_roi(ROI,img_shape)
-		data = encode_ij_roi(roi_b)
-		dec.decode_ij_roi(data,img_shape)
-	else:
-		print("ROI not present in file.")
-
-
-	im_stk = tfile.asarray()
-	ijm = tfile.imagej_metadata
-	metadata = {'hyperstack': ijm['hyperstack'] ,'slices': ijm['slices'], 'images': ijm['images'], 'ImageJ': '1.52g', 'Overlays':overlays_o , 'ROI':data,'loop': ijm['loop']}
-	#metadata['channels'] = tfile.imagej_metadata['channels']
-	#meta['Overlays'] = ''
-	#meta['ROI'] = ''
-	
-	tifffile.imsave("/Users/dwaithe/Desktop/out4.tiff",im_stk, imagej=True, ijmetadata=metadata)
-
-	pathname2 ="/Users/dwaithe/Desktop/out4.tiff"
-	#pathname2 = 'out3.tif'
-	tfile = tifffile.TiffFile(pathname2)
-	#tfile.imagej_metadata = meta
-	print(tfile.imagej_metadata)
-
-	
