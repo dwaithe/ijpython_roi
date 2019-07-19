@@ -1,8 +1,9 @@
+
+import numpy as np
 RECTANGLE = 0
-NORMAL = 3
+NORMAL = 3           
 
-
-class Roi():
+class Roi(object):
       def __init__(self,x,y,width,height,xMax,yMax,cornerDiameter=0):
             if width  < 1: width=1
             if height < 1: height=1
@@ -135,6 +136,10 @@ class Roi():
                   print("Overlays not yet implemented")
                   return False
 
+      def getMask(self):
+            mask = np.ones((self.height*self.width))*-1.
+            return mask.reshape(self.height,self.width)
+
       def getFloatPolygon(self):
             if self.cornerDiameter >0:
                   pass
@@ -160,3 +165,6 @@ class Roi():
                   pass
                   p = getPolygon()
                   return
+      
+
+

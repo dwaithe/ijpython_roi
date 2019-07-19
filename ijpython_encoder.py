@@ -271,10 +271,6 @@ if __name__ == "__main__":
 	else:
 		print("ROI not present in file.")
 
-	
-
-	print('rrrrr',tfile.imagej_metadata)
-	print('wwwwwwwwwwwwwwwwww')
 
 	im_stk = tfile.asarray()
 	ijm = tfile.imagej_metadata
@@ -284,8 +280,6 @@ if __name__ == "__main__":
 	#meta['ROI'] = ''
 	
 	tifffile.imsave("/Users/dwaithe/Desktop/out4.tiff",im_stk, imagej=True, ijmetadata=metadata)
-
-	print('bbbbbbbbbbbbbbbbbb')
 
 	pathname2 ="/Users/dwaithe/Desktop/out4.tiff"
 	#pathname2 = 'out3.tif'

@@ -1,8 +1,10 @@
 import struct
 import tifffile
 import ast
+import numpy as np
 from ij_roi import Roi
-
+from ij_ovalroi import OvalRoi
+import pylab as plt
 """	
 Translated from Java source:
 https://imagej.nih.gov/ij/developer/source/ij/io/RoiDecoder.java.html
@@ -109,8 +111,13 @@ TYPES = {'polygon':0,'rect':1,'oval':2,'line':3,'freeline':4,'polyline':5,
 
 
 def decode_ij_roi(roi,img_shape):
-    xMax = img_shape[1]
-    yMax = img_shape[2]
+    print(img_shape)
+    if img_shape.__len__() > 2:
+        xMax = img_shape[1]
+        yMax = img_shape[2]
+    if img_shape.__len__() == 2:
+        xMax = img_shape[0]
+        yMax = img_shape[1] 
     
     
     
@@ -286,9 +293,15 @@ def decode_ij_roi(roi,img_shape):
         if arcSize > 0:
             roi_b.setCornerDiameter(arcSize)
     elif(rtype == TYPES['oval']):
-        print("This script does not yet support ROI which are oval.")
+        
+        if subPixelRect:
+            roi_b = OvalRoi(xd, yd, widthd, heightd,xMax,yMax)
+            roi_b.subPixelRect = True
+        else: 
+            roi_b = OvalRoi(left, top,width,height,xMax,yMax)
+            roi_b.subPixelRect = False
         #TODO: oval option.
-        return False
+        return roi_b
     elif(rtype == TYPES['line']):
         print("This script does not yet support ROI which are line.")
         #TODO: line option.
@@ -321,25 +334,23 @@ def decode_ij_roi(roi,img_shape):
 
     return roi_b
 
-
 if __name__ == "__main__":
-
-    pathname2 ="out3.tif"
+    pathname2 ="out4.tif"
     tfile = tifffile.TiffFile(pathname2)
-    img_shape = ast.literal_eval(tfile.imagej_metadata['Info'].split("\n")[0].split('ImageDescription: ')[1])['shape']
+    img_shape = tfile.asarray().shape
 
 
-
+    overlay_arr = []
     if 'Overlays' in tfile.imagej_metadata:
         overlays = tfile.imagej_metadata['Overlays']
         if overlays.__class__.__name__ == 'list':
             #Multiple overlays and so iterate.
             for overlay in overlays:
-                decode_ij_roi(overlay,img_shape)
+                
+                overlay_arr.append(decode_ij_roi(overlay,img_shape))
         else:
             #One overlay.
-            print ('overlays',overlays)
-            decode_ij_roi(overlays,img_shape)
+                overlay_arr.append(decode_ij_roi(overlays,img_shape))
     else:
         print('no Overlays present in file.')
 
@@ -349,4 +360,21 @@ if __name__ == "__main__":
         decode_ij_roi(ROI,img_shape)
     else:
         print("ROI not present in file.")
-    
+
+    #Shows how to create mask image.
+    img = np.zeros((img_shape))
+    for i in range(0,overlay_arr.__len__()):
+
+        if overlay_arr[i] != False:
+            x0 = overlay_arr[i].x
+            y0 = overlay_arr[i].y
+            wid = overlay_arr[i].width
+            hei = overlay_arr[i].height
+            img[y0:y0+hei, x0:x0+wid] = overlay_arr[i].getMask()
+       
+        
+    plt.imshow(img)
+    plt.show()
+
+        
+        
