@@ -1,7 +1,8 @@
-# ImageJ to python Region-of-Interest (ROI) exchange function.
+# ImageJ to Python Region-of-Interest (ROI) exchange module.
 
 Python implementation of the ImageJ ROI api:
 https://imagej.nih.gov/ij/developer/source/ij/io/RoiDecoder.java.html
+The underlying code is similar but not the same. Doing things in Python is different to how you would do it in Java.
 
 This works with the Christoph Gohlke tifffile module:
 https://www.lfd.uci.edu/~gohlke/code/tifffile.py.html
@@ -14,7 +15,7 @@ Requirements:
 - numpy
 
 ### Background:
-I wanted a way of efficiently encoding ROI into tiff files so that the information could be used interchangeably between ImageJ and python.
+I wanted a way of efficiently encoding ROI into tiff files so that the information could be used interchangeably between ImageJ and Python.
 
 I haven't implemented all the features. At the moment it is possible to encode and decode rectangular regions.
 
@@ -61,7 +62,7 @@ tifffile.imsave("out5.tiff",im_stk, shape=im_stk.shape,imagej=True,ijmetadata=me
 ```
 
 
-### Example usuage Decoder:
+### Example usage Decoder:
 ```python
 pathname2 ="out5.tif"
 tfile = tifffile.TiffFile(pathname2)
