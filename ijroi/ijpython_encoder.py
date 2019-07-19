@@ -91,7 +91,7 @@ def encode_ij_roi(roi_b):
 				putPointCounters(roi,hdr2Offset)
 		def saveOverlayOptions(roi_b, options):
 			#TODO finish saveOVerlayOptions
-			print('TODO do overlay additional options')
+			#print('TODO do overlay additional options')
 			return False
 
 			#proto = roi_b.getPrototypeOverlay()
