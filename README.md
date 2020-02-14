@@ -8,7 +8,7 @@ This works with the Christoph Gohlke tifffile module:
 https://www.lfd.uci.edu/~gohlke/code/tifffile.py.html
 
 This can be installed using pip through:
-pip install git+https://github.com/dwaithe/generalMacros/ijPython_roi
+pip3 install git+https://github.com/dwaithe/ijpython_roi
 
 Requirements:
 - tifffile
@@ -24,8 +24,8 @@ I wanted a way of efficiently encoding ROI into tiff files so that the informati
 ### Example usage Encoder:
 ```python
 
-from ij_roi import Roi
-from ijpython_encoder import encode_ij_roi, RGB_encoder
+from ijroi.ij_roi import Roi
+from ijroi.ijpython_encoder import encode_ij_roi,  RGB_encoder
 import numpy as np
 import tifffile
 
@@ -53,8 +53,7 @@ data.append(encode_ij_roi(roi_b))
 
 metadata = {'hyperstack': True ,'slices': 100, 'channels':1, 'images': 100, 'ImageJ': '1.52g', 'Overlays':data , 'loop': False}
 
-tifffile.imsave("out5.tiff", im_stk, shape=im_stk.shape, imagej=True, ijmetadata=metadata)
-
+tifffile.imsave("out4.tiff", im_stk, shape=im_stk.shape, imagej=True, ijmetadata=metadata)
 
 
 ```
@@ -65,11 +64,13 @@ tifffile.imsave("out5.tiff", im_stk, shape=im_stk.shape, imagej=True, ijmetadata
 
 import tifffile
 import numpy as np
-from ij_roi import Roi
-from ij_ovalroi import OvalRoi
+from ijroi.ij_roi import Roi
+from ijroi.ijpython_decoder import decode_ij_roi
+
+from ijroi.ij_ovalroi import OvalRoi
 import pylab as plt
 
-pathname2 ="out4.tif"
+pathname2 ="out4.tiff"
 tfile = tifffile.TiffFile(pathname2)
 img_shape = tfile.asarray().shape
 
@@ -104,13 +105,9 @@ for i in range(0,overlay_arr.__len__()):
         y0 = overlay_arr[i].y
         wid = overlay_arr[i].width
         hei = overlay_arr[i].height
-        img[y0:y0+hei, x0:x0+wid] = overlay_arr[i].getMask()
+        img[5,y0:y0+hei, x0:x0+wid] = overlay_arr[i].getMask()
    
     
-plt.imshow(img)
+plt.imshow(img[5,:,:])
 plt.show()
-
-        
-        
 ```
-   
