@@ -111,7 +111,7 @@ class Roi(object):
       def getCPosition(self):
             return self.channel
       def getZPosition(self):
-            if self.slice ==0 and self.hyperstackPosition ==False
+            if self.slice ==0 and self.hyperstackPosition ==False:
                   return self.position
             else:
                   return self.slice
