@@ -111,7 +111,6 @@ TYPES = {'polygon':0,'rect':1,'oval':2,'line':3,'freeline':4,'polyline':5,
 
 
 def decode_ij_roi(roi,img_shape):
-    print(img_shape)
     if img_shape.__len__() > 2:
         xMax = img_shape[1]
         yMax = img_shape[2]
