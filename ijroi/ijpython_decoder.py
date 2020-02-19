@@ -229,8 +229,8 @@ def decode_ij_roi(roi,img_shape):
     imageOpacity = 0
     imageSize = 0
     
-    subPixelResolution = (options and SUB_PIXEL_RESOLUTION)!=0 and  version>=222;
-    drawOffset = subPixelResolution and (options and DRAW_OFFSET)!=0;
+    subPixelResolution = (options & SUB_PIXEL_RESOLUTION)!=0 and  version>=222;
+    drawOffset = subPixelResolution and (options & DRAW_OFFSET)!=0;
     subPixelRect = version>=223 and subPixelResolution and (rtype==TYPES['rect'] or rtype==TYPES['oval']);
     
     xd=0.0; yd=0.0; widthd=0.0; heightd=0.0;
