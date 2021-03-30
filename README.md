@@ -1,4 +1,4 @@
-# ImageJ to Python Region-of-Interest (ROI) exchange module.
+# ImageJ Region-of-Interest (ROI) Python Tiff exchange module.
 
 Python implementation of the ImageJ ROI API:
 https://imagej.nih.gov/ij/developer/source/ij/io/RoiDecoder.java.html
@@ -8,7 +8,7 @@ This works with the Christoph Gohlke tifffile module:
 https://www.lfd.uci.edu/~gohlke/code/tifffile.py.html
 
 This can be installed using pip through:
-pip3 install git+https://github.com/dwaithe/ijpython_roi
+python -m pip install ijroipytiff
 
 Requirements:
 - tifffile
@@ -24,8 +24,8 @@ I wanted a way of efficiently encoding ROI into tiff files so that the informati
 ### Example usage Encoder:
 ```python
 
-from ijroi.ij_roi import Roi
-from ijroi.ijpython_encoder import encode_ij_roi,  RGB_encoder
+from ijroipytiff.ij_roi import Roi
+from ijroipytiff.ijpython_encoder import encode_ij_roi,  RGB_encoder
 import numpy as np
 import tifffile
 
@@ -64,10 +64,10 @@ tifffile.imsave("out4.tiff", im_stk, shape=im_stk.shape, imagej=True, ijmetadata
 
 import tifffile
 import numpy as np
-from ijroi.ij_roi import Roi
-from ijroi.ijpython_decoder import decode_ij_roi
+from ijroipytiff.ij_roi import Roi
+from ijroipytiff.ijpython_decoder import decode_ij_roi
 
-from ijroi.ij_ovalroi import OvalRoi
+from ijroipytiff.ij_ovalroi import OvalRoi
 import pylab as plt
 
 pathname2 ="out4.tiff"
